@@ -30,6 +30,7 @@ export const reducer = (state, action) => {
           return {
               ...state,
               cartList, 
+              total: cartListTotal(cartList)
           }
         case 'CHANGE_CART_QTY':
             cartList[index].qty = action.payload.qty;
@@ -37,7 +38,14 @@ export const reducer = (state, action) => {
                 ...state,
                 cartList,
                 total: cartListTotal(cartList)
-         }  
+         } 
+        case 'REMOVE_FROM_CART':
+          cartList.splice(index,1);
+          return {
+              ...state,
+              cartList,
+              total: cartListTotal(cartList)
+          }
 
     }
 }

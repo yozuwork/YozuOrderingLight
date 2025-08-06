@@ -13,7 +13,16 @@ export default function Cart() {
                                     <td className='py-2 px-4 text-center align-middle'>
                                             <a 
                                                 href="#"
-                                                className="text-red-500 hover:underline"    
+                                                className="text-red-500 hover:underline"
+                                                onClick={(e)=>{
+                                                    e.preventDefault();
+                                                    dispatch({
+                                                        type: 'REMOVE_FROM_CART',
+                                                        payload: {
+                                                            id: item.id
+                                                        }
+                                                    });
+                                                }}    
                                             
                                             >
                                             X    
@@ -27,6 +36,9 @@ export default function Cart() {
                                             <span className="font-medium text-gray-900">{item.title}</span>
                                             <span className="text-sm text-gray-500">NT${item.price}</span>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <span className="text-sm text-gray-500">NT${item.price}</span>
                                     </td>
                                     <td className="py-2 px-4 text-center align-middle">
                                         <select
@@ -57,7 +69,66 @@ export default function Cart() {
                           })}     
                      </tbody>
                      <tfoot>
+                         <tr className="border-t">
+                            <td
+                                colSpan={5}
+                                className="py-4 px-4 text-right text-lg font-semibold text-gray-800 align-middle"
+                            >
+                                總金額 NT$ {state.total || 0}
+                                
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td colSpan={5}>
+                                <form className="p-4 space-y-4 bg-white rounded shadow-md max-w-md mx-auto">
+                                    <div>
+                                        <label htmlFor="name" className="block mb-1 font-medium text-gray-700">
+                                        姓名 *
+                                        </label>
+                                        <input
+                                        type="text"
+                                        id="name"
+                                        placeholder="請輸入您的姓名"
+                                        required
+                                        className="w-full rounded border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        />
+                                    </div>
 
+                                    <div>
+                                        <label htmlFor="ext" className="block mb-1 font-medium text-gray-700">
+                                        手機號碼
+                                        </label>
+                                        <input
+                                        type="text"
+                                        id="ext"
+                                        placeholder="請輸入手機號碼（選填）"
+                                        className="w-full rounded border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="notes" className="block mb-1 font-medium text-gray-700">
+                                        備註
+                                        </label>
+                                        <textarea
+                                        id="notes"
+                                        placeholder="特殊需求或備註（選填）"
+                                        rows={3}
+                                        className="w-full rounded border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+                                        />
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded"
+                                    >
+                                        送出訂單
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                                   
                      </tfoot>
                 </table>
         </div>

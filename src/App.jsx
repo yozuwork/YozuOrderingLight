@@ -1,7 +1,7 @@
 import { useReducer } from 'react'
 import { CartContext, reducer , initialState } from './store'
 import { OrderPage } from './pages/OrderPage'
-import { SummaryPage } from './pages/SummaryPage'
+import SummaryPage  from './pages/SummaryPage'
 import Navbar from './components/navbar'
 import './App.css'
 
