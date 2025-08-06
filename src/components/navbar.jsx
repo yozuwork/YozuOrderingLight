@@ -51,6 +51,7 @@ export default function Navbar() {
                     px-2 py-0.5 rounded-full
                     "
                 >
+                    {state.cartList.length}
                 </span>
             </button>
         </div>  
