@@ -19,7 +19,7 @@ const handleQtyChange = (productId, value) => {
          return (
              <div key={product.id} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 ">
                      <a href="#">
-                        <img className="rounded-t-lg" src={product.img} alt="" />
+                        <img className="w-full rounded-t-lg h-40  object-cover" src={product.img} alt="" />
                     </a>
                     <div className="p-5">
                         <a href="#">

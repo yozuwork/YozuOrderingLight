@@ -1,8 +1,11 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { CartContext } from '../store';
 
 export default function Cart() {
     const { state , dispatch } = useContext(CartContext);
+      useEffect(() => {
+        console.log('userData 更新:', state.userData);
+    }, [state.userData]);
     return (
         <div className='bg-light p-3'>
                 <table className="table-auto w-full border-collapse">
@@ -81,7 +84,13 @@ export default function Cart() {
                         </tr>
                         <tr>
                             <td colSpan={5}>
-                                <form className="p-4 space-y-4 bg-white rounded shadow-md max-w-md mx-auto">
+                                <form 
+                                     className="p-4 space-y-4 bg-white rounded shadow-md max-w-md mx-auto"
+                                     onSubmit={(e) => {
+                                        e.preventDefault();
+                                        dispatch({ type: 'SEND_ORDER' });
+                                    }}
+                                >
                                     <div>
                                         <label htmlFor="name" className="block mb-1 font-medium text-gray-700">
                                         姓名 *
@@ -91,6 +100,12 @@ export default function Cart() {
                                         id="name"
                                         placeholder="請輸入您的姓名"
                                         required
+                                        onChange={(e)=>{
+                                            dispatch({
+                                                type: 'SET_USER_DATA',
+                                                payload: { name: e.target.value }
+                                            });
+                                        }}
                                         className="w-full rounded border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
                                         />
                                     </div>
@@ -100,8 +115,14 @@ export default function Cart() {
                                         手機號碼
                                         </label>
                                         <input
-                                        type="text"
+                                        type="=phone"
                                         id="ext"
+                                        onChange={(e)=>{
+                                            dispatch({
+                                                type: 'SET_USER_DATA',
+                                                payload: { phone: e.target.value }
+                                            });
+                                        }}
                                         placeholder="請輸入手機號碼（選填）"
                                         className="w-full rounded border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
                                         />
@@ -113,6 +134,12 @@ export default function Cart() {
                                         </label>
                                         <textarea
                                         id="notes"
+                                        onChange={(e)=>{
+                                            dispatch({
+                                                type: 'SET_USER_DATA',
+                                                payload: { remark: e.target.value }
+                                            });
+                                        }}
                                         placeholder="特殊需求或備註（選填）"
                                         rows={3}
                                         className="w-full rounded border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"

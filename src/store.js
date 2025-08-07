@@ -1,17 +1,39 @@
-import { createContext } from 'react';
-export const CartContext = createContext({});
+import { createContext} from 'react';
+export const CartContext = createContext({
+
+});
 function cartListTotal(cartList) {
   return cartList.map((item) => item.qty * item.price)
     .reduce((acc, cur) => acc + cur, 0)
 }
+
 export const initialState = {
+  orderList: [],
+  singleOrder:{
+    cartList: [],
+    userData: {}
+  },
   cartList: [],
   currentPage: 'order', // 新增頁面狀態管理
+  userData:{
+    name: '',
+    phone: '',
+    remark: ''
+  },
+  total: 0, // 總金額
 };
 export const reducer = (state, action) => {
     const cartList = [...state.cartList];
+    const newSingleOrder = {
+      cartList: [...state.cartList],
+      userData: { ...state.userData },
+      total: cartListTotal(cartList)
+    };
+    const newOrderList = [...state.orderList];
     // 在 cartList 裡找 id 與 action.payload.id 相同的商品，回傳索引
-    const index = cartList.findIndex((item) => item.id === action.payload.id)
+    const index = action.payload && action.payload.id
+    ? cartList.findIndex(item => item.id === action.payload.id)
+    : -1;
     switch (action.type) {
        case 'SET_PAGE': 
          return {
@@ -46,6 +68,46 @@ export const reducer = (state, action) => {
               cartList,
               total: cartListTotal(cartList)
           }
+        case 'SET_USER_DATA':
+          return {
+              ...state,
+              userData: {
+                ...state.userData,
+                ...action.payload,  // 利用展開運算符合併更新欄位
+              }
+          }  
+        case 'SEND_ORDER':
+          return {
+              ...state,
+              currentPage: 'summary', // 發送訂單後切換到統計頁面
+              orderList: [...state.orderList, newSingleOrder], // 新增訂單加入陣列
+              cartList: [],
+              userData: {
+                name: '',
+                phone: '',
+                remark: ''
+              },
+          }
+        case 'REMOVE_All_ORDER': 
+          return {
+              ...state,
+              orderList: [],
+              cartList: [],
+              total: 0,
+              userData: {
+                name: '',
+                phone: '',
+                remark: ''
+              }
+          } 
+        case 'REMOVE_ORDER':
+          newOrderList.splice(action.payload.index, 1);
+          return {
+             ...state,
+             orderList: newOrderList,
+          }
+       default:
+          return state;   
 
     }
 }
